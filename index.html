@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>里斯本 · 波尔图 旅行手册</title>
+<style>
+  :root{
+    --ink:#1b2a41;
+    --paper:#f6f1e2;
+    --paper-2:#efe6cf;
+    --card:#fffdf7;
+    --line:#d9cdaf;
+    --blue:#2b5a8a;
+    --blue-deep:#1c3f66;
+    --terracotta:#c1602a;
+    --gold:#c9962f;
+    --teal:#2f7a6f;
+    --purple:#6b4e8e;
+    --slate:#5b6b7a;
+    --muted:#6b6455;
+    --shadow: 0 6px 18px rgba(27,42,65,.10);
+    color-scheme: light;
+  }
+  [data-theme="night"]{
+    --ink:#eee6d3;
+    --paper:#0f1729;
+    --paper-2:#141e35;
+    --card:#182238;
+    --line:#2a3652;
+    --blue:#7fb3e0;
+    --blue-deep:#a9d2f2;
+    --terracotta:#e8945e;
+    --gold:#e3bb63;
+    --teal:#6fc3b4;
+    --purple:#b79bdc;
+    --slate:#9fb0c4;
+    --muted:#9aa4b8;
+    --shadow: 0 8px 22px rgba(0,0,0,.45);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;
+    line-height:1.5;
+    padding-bottom:60px;
+    transition:background .4s ease,color .4s ease;
+  }
+  h1,h2,h3{
+    font-family:Georgia,"Songti SC","STSong",serif;
+    margin:0 0 .3em 0;
+    letter-spacing:.02em;
+  }
+  a{color:inherit;}
+  .wrap{max-width:640px;margin:0 auto;padding:0 16px;}
+  .top-nav{
+    position:sticky;top:0;z-index:20;
+    background:linear-gradient(180deg,var(--paper) 80%,transparent);
+    padding:10px 0 4px;
+  }
+  .top-nav-row{display:flex;justify-content:space-between;align-items:center;max-width:640px;margin:0 auto;padding:0 16px;}
+  .trip-title{font-size:15px;color:var(--muted);letter-spacing:.04em;}
+  .theme-note{font-size:12px;color:var(--muted);}
+
+  /* ===== Focus card ===== */
+  .focus-card{
+    background:linear-gradient(135deg,var(--blue-deep),var(--blue));
+    color:#fff8ec;
+    border-radius:20px;
+    padding:22px 20px 20px;
+    margin:8px 0 22px;
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+  }
+  .focus-card::after{
+    content:"";position:absolute;right:-40px;bottom:-40px;width:160px;height:160px;
+    border-radius:50%;background:rgba(255,255,255,.06);
+  }
+  .focus-eyebrow{font-size:13px;opacity:.85;margin-bottom:6px;}
+  .focus-event{font-size:19px;font-family:Georgia,"Songti SC",serif;margin-bottom:14px;}
+  .focus-event small{display:block;font-size:13px;font-weight:400;opacity:.85;margin-top:2px;}
+  .countdown{display:flex;gap:10px;}
+  .cd-unit{flex:1;background:rgba(255,255,255,.12);border-radius:12px;padding:10px 4px;text-align:center;}
+  .cd-num{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;}
+  .cd-label{font-size:11px;opacity:.8;margin-top:2px;}
+  .focus-done{font-size:15px;opacity:.9;}
+
+  /* ===== Section heading ===== */
+  .section{margin:34px 0;}
+  .section-head{display:flex;align-items:baseline;gap:8px;margin-bottom:14px;}
+  .section-head h2{font-size:20px;}
+  .section-sub{font-size:12.5px;color:var(--muted);}
+
+  /* ===== Map ===== */
+  .map-card{background:var(--card);border-radius:18px;padding:14px;box-shadow:var(--shadow);border:1px solid var(--line);}
+  .map-legend{display:flex;flex-wrap:wrap;gap:10px 14px;margin-top:10px;font-size:12.5px;}
+  .legend-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle;}
+
+  /* ===== Booking cards ===== */
+  .book-card{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:14px 16px;margin-bottom:12px;box-shadow:var(--shadow);
+  }
+  .book-kind{font-size:11.5px;color:#fff;display:inline-block;padding:2px 9px;border-radius:20px;margin-bottom:8px;}
+  .book-title{font-size:16px;font-weight:600;margin-bottom:4px;}
+  .book-route{font-size:14.5px;margin-bottom:6px;}
+  .book-time{font-weight:700;}
+  .book-meta{font-size:13px;color:var(--muted);}
+  .book-meta a{text-decoration:underline;text-decoration-color:var(--line);}
+  .book-flag{font-size:12px;color:var(--terracotta);margin-top:6px;}
+  .book-link{display:inline-block;margin-top:8px;font-size:13px;color:var(--blue);text-decoration:none;border-bottom:1px solid currentColor;}
+  [data-theme="night"] .book-link{color:var(--blue-deep);}
+
+  /* ===== Day itinerary ===== */
+  .day{
+    background:var(--card);border:1px solid var(--line);border-radius:18px;
+    margin-bottom:14px;box-shadow:var(--shadow);overflow:hidden;
+  }
+  .day-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 16px;cursor:pointer;user-select:none;
+  }
+  .day-head-left{display:flex;align-items:center;gap:10px;}
+  .day-dot{width:11px;height:11px;border-radius:50%;flex:none;}
+  .day-title{font-size:16px;font-weight:600;}
+  .day-date{font-size:12.5px;color:var(--muted);}
+  .day-chevron{font-size:13px;color:var(--muted);transition:transform .25s ease;}
+  .day.open .day-chevron{transform:rotate(90deg);}
+  .day-body{display:none;padding:0 16px 16px;}
+  .day.open .day-body{display:block;}
+  .day-nav-btn{
+    display:inline-block;font-size:13px;padding:7px 12px;border-radius:20px;
+    background:var(--paper-2);color:var(--ink);text-decoration:none;margin-bottom:12px;
+  }
+  .timeline{border-left:2px solid var(--line);margin-left:4px;padding-left:16px;}
+  .t-row{position:relative;padding-bottom:16px;}
+  .t-row:last-child{padding-bottom:0;}
+  .t-row::before{
+    content:"";position:absolute;left:-21px;top:3px;width:9px;height:9px;border-radius:50%;
+    background:var(--terracotta);border:2px solid var(--card);
+  }
+  .t-time{font-size:12.5px;color:var(--muted);font-weight:600;letter-spacing:.02em;}
+  .t-content{font-size:14.5px;margin-top:2px;}
+  .t-content a{color:var(--blue);text-decoration:underline;text-decoration-color:var(--line);}
+  [data-theme="night"] .t-content a{color:var(--blue-deep);}
+  .badge-book{
+    display:inline-block;font-size:11px;color:#fff;background:var(--terracotta);
+    padding:1px 7px;border-radius:20px;margin-left:6px;vertical-align:middle;
+  }
+  .mini-map{display:none;margin:2px 0 14px;}
+  .day.map-open .mini-map{display:block;}
+
+  /* ===== Todo ===== */
+  .todo-list{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px;box-shadow:var(--shadow);}
+  .todo-list ul{margin:0;padding-left:20px;}
+  .todo-list li{margin-bottom:10px;font-size:14.5px;}
+  .todo-list li:last-child{margin-bottom:0;}
+  .todo-tag{font-size:11px;color:var(--muted);}
+
+  /* ===== Tips ===== */
+  .tips-grid{display:grid;grid-template-columns:1fr;gap:10px;}
+  .tip-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);}
+  .tip-card h3{font-size:14.5px;margin-bottom:4px;}
+  .tip-card p{font-size:13.5px;margin:0;color:var(--muted);}
+
+  footer{text-align:center;font-size:12px;color:var(--muted);margin-top:40px;}
+</style>
+</head>
+<body data-theme="day">
+
+<div class="top-nav"><div class="top-nav-row">
+  <span class="trip-title">里斯本 · 辛特拉 · 波尔图</span>
+  <span class="theme-note" id="themeNote">☀️ 白天配色</span>
+</div></div>
+
+<div class="wrap">
+
+  <!-- ===== 此刻关注 ===== -->
+  <div class="focus-card">
+    <div class="focus-eyebrow">此刻关注</div>
+    <div class="focus-event" id="focusEvent">加载中…</div>
+    <div class="countdown" id="countdown">
+      <div class="cd-unit"><div class="cd-num" id="cdDays">--</div><div class="cd-label">天</div></div>
+      <div class="cd-unit"><div class="cd-num" id="cdHours">--</div><div class="cd-label">时</div></div>
+      <div class="cd-unit"><div class="cd-num" id="cdMins">--</div><div class="cd-label">分</div></div>
+      <div class="cd-unit"><div class="cd-num" id="cdSecs">--</div><div class="cd-label">秒</div></div>
+    </div>
+  </div>
+
+  <!-- ===== 行程总览地图 ===== -->
+  <div class="section">
+    <div class="section-head"><h2>行程总览</h2></div>
+    <div class="map-card">
+      <svg viewBox="0 0 600 420" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="4"/></filter>
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#rough)">
+          <!-- day1: 机场 -> 里斯本市区 -->
+          <path d="M120,60 C160,90 190,110 210,150" stroke="#c1602a" stroke-width="4"/>
+          <!-- day2: 里斯本 -> 辛特拉 -> 罗卡角/卡斯凯什 -> 里斯本 -->
+          <path d="M210,150 C140,140 70,150 55,190" stroke="#2f7a6f" stroke-width="4" stroke-dasharray="1 10"/>
+          <path d="M55,190 C40,230 40,260 70,280" stroke="#2f7a6f" stroke-width="4" stroke-dasharray="1 10"/>
+          <path d="M70,280 C120,300 170,270 210,150" stroke="#2f7a6f" stroke-width="3" stroke-dasharray="1 10" opacity=".6"/>
+          <!-- day3: 里斯本市区 -> 贝伦 -> 城堡 -->
+          <path d="M210,150 C190,190 175,215 165,245" stroke="#6b4e8e" stroke-width="4"/>
+          <path d="M210,150 C235,165 255,175 268,185" stroke="#6b4e8e" stroke-width="4" stroke-dasharray="6 6"/>
+          <!-- day4: 里斯本 -> 波尔图 大巴 -->
+          <path d="M210,150 C280,90 340,40 400,55" stroke="#5b6b7a" stroke-width="4" stroke-dasharray="10 8"/>
+          <!-- day5/6: 波尔图市内 -->
+          <path d="M400,55 C420,80 435,95 452,100" stroke="#c9962f" stroke-width="4"/>
+        </g>
+        <!-- pins -->
+        <g font-family="Georgia,serif" font-size="12" fill="#1b2a41">
+          <circle cx="120" cy="60" r="6" fill="#c1602a"/><text x="128" y="58">里斯本机场</text>
+          <circle cx="210" cy="150" r="8" fill="#c1602a"/><text x="220" y="148">住:阿利夫阿万达斯酒店</text><text x="220" y="163" font-size="10" fill="#6b6455">9/15–9/18</text>
+          <circle cx="55" cy="190" r="6" fill="#2f7a6f"/><text x="15" y="180">辛特拉</text>
+          <circle cx="70" cy="280" r="6" fill="#2f7a6f"/><text x="45" y="300">罗卡角/卡斯凯什</text>
+          <circle cx="165" cy="245" r="6" fill="#6b4e8e"/><text x="105" y="262">贝伦(修道院/塔)</text>
+          <circle cx="268" cy="185" r="6" fill="#6b4e8e"/><text x="276" y="183">圣若热城堡</text>
+          <circle cx="400" cy="55" r="8" fill="#c9962f"/><text x="345" y="40">住:B&amp;B波尔图中心</text><text x="345" y="27" font-size="10" fill="#6b6455">9/18–9/20</text>
+          <circle cx="452" cy="100" r="6" fill="#c9962f"/><text x="462" y="98">波尔图机场</text>
+        </g>
+      </svg>
+      <div class="map-legend">
+        <span><span class="legend-dot" style="background:#c1602a"></span>9/15 抵达里斯本</span>
+        <span><span class="legend-dot" style="background:#2f7a6f"></span>9/16 辛特拉+海岸</span>
+        <span><span class="legend-dot" style="background:#6b4e8e"></span>9/17 贝伦+城堡</span>
+        <span><span class="legend-dot" style="background:#5b6b7a"></span>9/18 转场波尔图</span>
+        <span><span class="legend-dot" style="background:#c9962f"></span>9/19–20 波尔图</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 已确认预订 ===== -->
+  <div class="section">
+    <div class="section-head"><h2>已确认预订</h2></div>
+
+    <div class="book-card">
+      <span class="book-kind" style="background:#c1602a">✈ 航班 · Zhh</span>
+      <div class="book-title">LG3751 · Luxair</div>
+      <div class="book-route">卢森堡机场 <span class="book-time">10:10</span> → 里斯本机场T1 <span class="book-time">12:05</span>（当地时间，9月15日周二）</div>
+      <div class="book-flag">⚠ 截图内提示"航班信息因变更已更新"，建议出发前在 Luxair 官网/邮箱再核实一次</div>
+    </div>
+
+    <div class="book-card">
+      <span class="book-kind" style="background:#c1602a">✈ 航班 · 小恰</span>
+      <div class="book-title">VY8466 · Vueling</div>
+      <div class="book-route">巴塞罗那T1 <span class="book-time">12:10</span> → 里斯本T2 <span class="book-time">13:20</span>（当地时间，9月15日周二）</div>
+      <div class="book-meta">乘客 YIYI ZHOU</div>
+    </div>
+
+    <div class="book-card">
+      <span class="book-kind" style="background:#8a7048">🏨 酒店</span>
+      <div class="book-title">阿利夫阿万达斯酒店 Hotel Alif Avenidas</div>
+      <div class="book-route">入住 9/15 · 退房 9/18　·　2位成人 / 1间房</div>
+      <div class="book-meta">
+        <a href="https://www.google.com/maps/dir/?api=1&destination=Av.%20Duque%20de%20%C3%81vila%20189%2C%20Lisboa" target="_blank">Av. Duque de Ávila 189, Lisboa</a>
+        ・ <a href="tel:+351213593000">+351 213 593 000</a>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <span class="book-kind" style="background:#5b6b7a">🚌 城际大巴</span>
+      <div class="book-title">FlixBus Route 1000</div>
+      <div class="book-route">里斯本 Oriente（39D站台） <span class="book-time">08:00</span> → 波尔图 Campanhã <span class="book-time">11:15</span>（9月18日周五）</div>
+      <div class="book-meta">座位 1A ・ <a href="https://www.google.com/maps/dir/?api=1&destination=Esta%C3%A7%C3%A3o%20Oriente%2C%20Lisboa" target="_blank">Oriente站怎么走</a></div>
+    </div>
+
+    <div class="book-card">
+      <span class="book-kind" style="background:#8a7048">🏨 酒店</span>
+      <div class="book-title">B&amp;B HOTEL Porto Centro Massarelos</div>
+      <div class="book-route">入住 9/18 · 退房 9/20　（14:00 前台可办理入住，退房12:00前）</div>
+      <div class="book-meta">
+        <a href="https://www.google.com/maps/dir/?api=1&destination=Rua%20da%20Paz%20163%2C%20Porto" target="_blank">Rua da Paz 163, Porto</a>
+        ・ <a href="tel:+351220987180">+351 220 987 180</a>
+      </div>
+    </div>
+
+    <div class="book-card">
+      <span class="book-kind" style="background:#2b5a8a">✈ 航班 · Zhh</span>
+      <div class="book-title">FR2862 · Ryanair</div>
+      <div class="book-route">波尔图机场 <span class="book-time">07:35</span> → 卢森堡机场 <span class="book-time">11:00</span>（9月20日周日）</div>
+      <div class="book-flag">⚠ 波尔图地铁约6点才开始运营，赶不上07:35的航班，务必提前订出租车/Uber，见下方待办</div>
+    </div>
+
+    <div class="book-card">
+      <span class="book-kind" style="background:#2b5a8a">✈ 航班 · 小恰</span>
+      <div class="book-title">FR4546 · Ryanair</div>
+      <div class="book-route">波尔图机场 <span class="book-time">07:45</span> → 巴塞罗那 <span class="book-time">10:30</span>（9月20日周日）</div>
+      <div class="book-flag">💡 和上面Zh的回程时间接近，同一天同一机场，可以拼一辆车去机场</div>
+    </div>
+  </div>
+
+  <!-- ===== 逐日行程 ===== -->
+  <div class="section">
+    <div class="section-head"><h2>逐日行程</h2></div>
+    <div class="section-sub" style="margin-bottom:12px;">点开每天标题可展开详情；地点文字可直接点开谷歌地图导航</div>
+
+    <!-- Day 1 -->
+    <div class="day" id="day1">
+      <div class="day-head" onclick="toggleDay('day1')">
+        <div class="day-head-left"><span class="day-dot" style="background:#c1602a"></span>
+          <div><div class="day-title">Day 1 · 抵达里斯本</div><div class="day-date">9月15日 周二</div></div>
+        </div>
+        <span class="day-chevron">›</span>
+      </div>
+      <div class="day-body">
+        <div class="timeline">
+          <div class="t-row"><div class="t-time">12:05</div><div class="t-content">Zhh 抵达<a href="https://www.google.com/maps/dir/?api=1&destination=Aeroporto%20de%20Lisboa%20Humberto%20Delgado" target="_blank">里斯本机场T1去拿里斯本卡预约后天修道院</a></div></div>
+          <div class="t-row"><div class="t-time">13:20</div><div class="t-content">朋友抵达<a href="https://www.google.com/maps/dir/?api=1&destination=Aeroporto%20de%20Lisboa%20Humberto%20Delgado" target="_blank">里斯本机场T2</a>，两人在到达大厅碰头</div></div>
+          <div class="t-row"><div class="t-time">下午</div><div class="t-content">前往<a href="https://www.google.com/maps/dir/?api=1&destination=Av.%20Duque%20de%20%C3%81vila%20189%2C%20Lisboa" target="_blank">酒店</a>放行李，老城区散步、法朵餐厅晚餐听歌，观景台看日落</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 2 -->
+    <div class="day" id="day2">
+      <div class="day-head" onclick="toggleDay('day2')">
+        <div class="day-head-left"><span class="day-dot" style="background:#2f7a6f"></span>
+          <div><div class="day-title">Day 2 · 辛特拉 + 海岸</div><div class="day-date">9月16日 周三</div></div>
+        </div>
+        <span class="day-chevron">›</span>
+      </div>
+      <div class="day-body">
+        <a class="day-nav-btn" href="https://www.google.com/maps/dir/?api=1&origin=Lisboa&destination=Cascais&waypoints=Esta%C3%A7%C3%A3o%20de%20Sintra|Quinta%20da%20Regaleira%2C%20Sintra|Cabo%20da%20Roca" target="_blank">🧭 一键打开全天路线导航</a>
+        <div class="timeline">
+          <div class="t-row"><div class="t-time">上午</div><div class="t-content">里斯本 → <a href="https://www.google.com/maps/dir/?api=1&destination=Esta%C3%A7%C3%A3o%20de%20Sintra" target="_blank">辛特拉火车站</a>（CP火车，约40分钟，里斯本卡当天不用）</div></div>
+          <div class="t-row"><div class="t-time">09:30/10:00 场</div><div class="t-content">游览<a href="https://www.google.com/maps/dir/?api=1&destination=Quinta%20da%20Regaleira%2C%20Sintra" target="_blank">雷加莱拉庄园</a><span class="badge-book">需提前订票</span><br>官方购票：regaleira.byblueticket.pt，按时段入场</div></div>
+          <div class="t-row"><div class="t-time">午后</div><div class="t-content">步行/当地小巴到 Portela de Sintra 站，坐 <b>1624路巴士</b>（原403路）前往<a href="https://www.google.com/maps/dir/?api=1&destination=Cabo%20da%20Roca" target="_blank">罗卡角</a>（欧洲大陆最西点）</div></div>
+          <div class="t-row"><div class="t-time">下午</div><div class="t-content">同一班车继续坐到<a href="https://www.google.com/maps/dir/?api=1&destination=Cascais%2C%20Portugal" target="_blank">卡斯凯什</a>，逛小镇/海边</div></div>
+          <div class="t-row"><div class="t-time">傍晚</div><div class="t-content">卡斯凯什火车站坐 Linha de Cascais 线直接回里斯本（约40分钟，到 Cais do Sodré）</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 3 -->
+    <div class="day" id="day3">
+      <div class="day-head" onclick="toggleDay('day3')">
+        <div class="day-head-left"><span class="day-dot" style="background:#6b4e8e"></span>
+          <div><div class="day-title">Day 3 · 贝伦 + 圣若热城堡</div><div class="day-date">9月17日 周四 · 今天用24小时里斯本卡</div></div>
+        </div>
+        <span class="day-chevron">›</span>
+      </div>
+      <div class="day-body">
+        <a class="day-nav-btn" href="https://www.google.com/maps/dir/?api=1&origin=Lisboa&destination=Castelo%20de%20S%C3%A3o%20Jorge%2C%20Lisboa&waypoints=Mosteiro%20dos%20Jer%C3%B3nimos%2C%20Lisboa|Torre%20de%20Bel%C3%A9m%2C%20Lisboa" target="_blank">🧭 一键打开全天路线导航</a>
+        <div class="timeline">
+          <div class="t-row"><div class="t-time">建议一早</div><div class="t-content">在地铁站激活 <b>24小时里斯本卡</b>，当天覆盖交通+以下两个免费门票</div></div>
+          <div class="t-row"><div class="t-time">上午</div><div class="t-content">电车15E/公交到<a href="https://www.google.com/maps/dir/?api=1&destination=Mosteiro%20dos%20Jer%C3%B3nimos%2C%20Lisboa" target="_blank">热罗尼莫斯修道院</a>（持卡免费）<span class="badge-book">建议提前订票</span><br>开放9:30–18:30，周一闭馆，最晚入场17:30</div></div>
+          <div class="t-row"><div class="t-time">中午</div><div class="t-content">步行至<a href="https://www.google.com/maps/dir/?api=1&destination=Torre%20de%20Bel%C3%A9m%2C%20Lisboa" target="_blank">贝伦塔</a>（持卡免费）<span class="badge-book">建议提前订票</span><br>开放9:30–18:00，周一闭馆；旁边可以吃正宗葡式蛋挞</div></div>
+          <div class="t-row"><div class="t-time">午后</div><div class="t-content">坐车回市区，前往阿尔法玛区</div></div>
+          <div class="t-row"><div class="t-time">傍晚</div><div class="t-content">登<a href="https://www.google.com/maps/dir/?api=1&destination=Castelo%20de%20S%C3%A3o%20Jorge%2C%20Lisboa" target="_blank">圣若热城堡</a>（持卡免费）看日落，开放至21:00（4–9月）</div></div>
+          <div class="t-row"><div class="t-time">晚上</div><div class="t-content">坐28路电车穿阿尔法玛下山，找餐厅吃晚饭</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 4 -->
+    <div class="day" id="day4">
+      <div class="day-head" onclick="toggleDay('day4')">
+        <div class="day-head-left"><span class="day-dot" style="background:#5b6b7a"></span>
+          <div><div class="day-title">Day 4 · 转场波尔图</div><div class="day-date">9月18日 周五</div></div>
+        </div>
+        <span class="day-chevron">›</span>
+      </div>
+      <div class="day-body">
+        <div class="timeline">
+          <div class="t-row"><div class="t-time">早上</div><div class="t-content">酒店退房，前往<a href="https://www.google.com/maps/dir/?api=1&destination=Esta%C3%A7%C3%A3o%20Oriente%2C%20Lisboa" target="_blank">Oriente车站</a>，建议提前30分钟到（39D站台）</div></div>
+          <div class="t-row"><div class="t-time">08:00</div><div class="t-content">FlixBus 出发前往波尔图</div></div>
+          <div class="t-row"><div class="t-time">11:15</div><div class="t-content">抵达 <a href="https://www.google.com/maps/dir/?api=1&destination=Esta%C3%A7%C3%A3o%20de%20Campanh%C3%A3%2C%20Porto" target="_blank">Campanhã站</a>，转乘前往<a href="https://www.google.com/maps/dir/?api=1&destination=Rua%20da%20Paz%20163%2C%20Porto" target="_blank">波尔图酒店</a>（14:00后可入住，早到可寄存行李先出去逛）</div></div>
+          <div class="t-row"><div class="t-time">下午</div><div class="t-content">杜罗河畔、里贝拉区随便走走，路易一世桥看日落</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 5 -->
+    <div class="day" id="day5">
+      <div class="day-head" onclick="toggleDay('day5')">
+        <div class="day-head-left"><span class="day-dot" style="background:#c9962f"></span>
+          <div><div class="day-title">Day 5 · 波尔图老城</div><div class="day-date">9月19日 周六</div></div>
+        </div>
+        <span class="day-chevron">›</span>
+      </div>
+      <div class="day-body">
+        <div class="timeline">
+          <div class="t-row"><div class="t-time">全天</div><div class="t-content">莱罗书店、圣本图火车站、克莱里科斯塔、加亚新城酒窖，波尔图适合走着逛，具体顺序按当天体力和天气灵活调整</div></div>
+          <div class="t-row"><div class="t-time">晚上</div><div class="t-content">提前想好第二天一早去机场的用车方式（见待办清单）</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 6 -->
+    <div class="day" id="day6">
+      <div class="day-head" onclick="toggleDay('day6')">
+        <div class="day-head-left"><span class="day-dot" style="background:#2b5a8a"></span>
+          <div><div class="day-title">Day 6 · 分别回程</div><div class="day-date">9月20日 周日</div></div>
+        </div>
+        <span class="day-chevron">›</span>
+      </div>
+      <div class="day-body">
+        <div class="timeline">
+          <div class="t-row"><div class="t-time">凌晨</div><div class="t-content">建议05:15前退房 / 出发去<a href="https://www.google.com/maps/dir/?api=1&destination=Aeroporto%20Francisco%20S%C3%A1%20Carneiro%2C%20Porto" target="_blank">波尔图机场</a>，两人拼车</div></div>
+          <div class="t-row"><div class="t-time">07:35</div><div class="t-content">Zhh 乘 FR2862 飞卢森堡</div></div>
+          <div class="t-row"><div class="t-time">07:45</div><div class="t-content">小恰乘 FR4546 飞巴塞罗那，旅程结束</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 待办清单 ===== -->
+  <div class="section">
+    <div class="section-head"><h2>待办清单</h2></div>
+    <div class="section-sub" style="margin-bottom:12px;">办完一项告诉我，我会更新这个页面</div>
+    <div class="todo-list">
+      <ul>
+        <li>官网 regaleira.byblueticket.pt 预约雷加莱拉庄园的入场时段（9/16）</li>
+        <li>决定是否为热罗尼莫斯修道院 / 贝伦塔提前订好带时段的票（9/17，避免现场排队）</li>
+        <li>购买24小时里斯本卡，9/17当天使用</li>
+        <li>核实 LG3751 卢森堡→里斯本航班的最新时刻（截图提示有过变更）</li>
+        <li>预订9/20清晨去波尔图机场的出租车/Uber（地铁6点才开，赶不上07:35的航班），建议两人拼车</li>
+        <li>Ryanair / Luxair / Vueling 提前24小时线上值机</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== 实用贴士 ===== -->
+  <div class="section">
+    <div class="section-head"><h2>实用贴士</h2></div>
+    <div class="tips-grid">
+      <div class="tip-card"><h3>时区</h3><p>葡萄牙（西欧时间）比卢森堡/巴塞罗那（中欧时间）晚1小时。看到"当地时间"都是指行程所在城市的时间。</p></div>
+      <div class="tip-card"><h3>交通卡</h3><p>里斯本市内可办 Navegante/Viva Viagem 卡；辛特拉当地的1624/441等巴士不与里斯本卡通用，上车买票即可。</p></div>
+      <div class="tip-card"><h3>货币与小费</h3><p>欧元。餐厅账单通常已含服务费，小费非强制，满意可留5-10%现金。</p></div>
+      <div class="tip-card"><h3>插座</h3><p>欧标两圆孔（Type C/F），230V，卢森堡/西班牙同标准，不需要转换插头。</p></div>
+      <div class="tip-card"><h3>穿着与天气</h3><p>9月里斯本/波尔图白天仍偏热，海边（罗卡角）风大且早晚温差明显，建议带一件薄外套。</p></div>
+      <div class="tip-card"><h3>排队提醒</h3><p>热罗尼莫斯修道院、贝伦塔、雷加莱拉庄园旺季现场排队常超过1小时，提前网上购票能省下大量时间。</p></div>
+    </div>
+  </div>
+
+  <footer>祝旅途顺利 · 里斯本 &amp; 波尔图</footer>
+</div>
+
+<script>
+// ---------- 主题：白天/黑夜（按葡萄牙当地时间自动切换） ----------
+function isPortugalDaytime(){
+  try{
+    var s = new Intl.DateTimeFormat('en-US',{hour:'numeric',hour12:false,timeZone:'Europe/Lisbon'}).format(new Date());
+    var h = parseInt(s,10);
+    return h>=7 && h<20;
+  }catch(e){ var hh=new Date().getHours(); return hh>=7 && hh<20; }
+}
+function applyTheme(){
+  var day = isPortugalDaytime();
+  document.body.setAttribute('data-theme', day?'day':'night');
+  document.getElementById('themeNote').textContent = day? '☀️ 白天配色 (里斯本时间)' : '🌙 夜间配色 (里斯本时间)';
+}
+applyTheme();
+setInterval(applyTheme, 60000);
+
+// ---------- 手风琴展开 ----------
+function toggleDay(id){
+  document.getElementById(id).classList.toggle('open');
+}
+
+// ---------- 倒计时：此刻关注 ----------
+var events = [
+  {t:"2026-09-15T10:10:00+02:00", label:"Zhh 起飞：卢森堡 → 里斯本", sub:"LG3751 · 卢森堡时间 10:10"},
+  {t:"2026-09-15T12:10:00+02:00", label:"小恰起飞：巴塞罗那 → 里斯本", sub:"VY8466 · 巴塞罗那时间 12:10"},
+  {t:"2026-09-18T08:00:00+01:00", label:"大巴出发：里斯本 → 波尔图", sub:"FlixBus 1000 · 里斯本时间 08:00"},
+  {t:"2026-09-20T07:35:00+01:00", label:"Zhh 起飞：波尔图 → 卢森堡", sub:"FR2862 · 波尔图时间 07:35"},
+  {t:"2026-09-20T07:45:00+01:00", label:"小恰起飞：波尔图 → 巴塞罗那", sub:"FR4546 · 波尔图时间 07:45"}
+];
+function pad(n){return n<10?('0'+n):(''+n);}
+function updateCountdown(){
+  var now = new Date();
+  var next = null;
+  for(var i=0;i<events.length;i++){
+    var d = new Date(events[i].t);
+    if(d.getTime() > now.getTime()){ next = {ev:events[i], d:d}; break; }
+  }
+  if(!next){
+    document.getElementById('focusEvent').innerHTML = "旅程已全部结束 · 一路顺风";
+    document.getElementById('countdown').style.display='none';
+    return;
+  }
+  document.getElementById('focusEvent').innerHTML = next.ev.label + "<small>" + next.ev.sub + "</small>";
+  var diff = next.d.getTime() - now.getTime();
+  var days = Math.floor(diff/86400000);
+  var hours = Math.floor((diff%86400000)/3600000);
+  var mins = Math.floor((diff%3600000)/60000);
+  var secs = Math.floor((diff%60000)/1000);
+  document.getElementById('cdDays').textContent = days;
+  document.getElementById('cdHours').textContent = pad(hours);
+  document.getElementById('cdMins').textContent = pad(mins);
+  document.getElementById('cdSecs').textContent = pad(secs);
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
